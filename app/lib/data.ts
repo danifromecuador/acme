@@ -8,6 +8,7 @@ import {
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
+import { log } from "console";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -30,6 +31,7 @@ export async function fetchLatestInvoices() {
       ORDER BY invoices.date DESC
       LIMIT 5`;
     const latestInvoices = data.map(invoice=> ({...invoice,amount: formatCurrency(invoice.amount),}));
+    
     return latestInvoices;
   } catch (error) {
     console.error("Database Error:", error);
